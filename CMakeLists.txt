@@ -25,7 +25,7 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 find_package(PkgConfig)
-pkg_check_modules(LIBSERIAL libserial1)
+pkg_check_modules(LIBSERIAL REQUIRED libserial)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -137,6 +137,8 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
+include_directories(${LIBSERIAL_INCLUDE_DIRS})
+
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
 #   src/${PROJECT_NAME}/conductrix.cpp
@@ -163,6 +165,10 @@ add_library(conductrix ${CONDUCTRIX_SOURCES})
 ## target back to the shorter version for ease of user use
 ## e.g. "rosrun someones_pkg node" instead of "rosrun someones_pkg someones_pkg_node"
 # set_target_properties(${PROJECT_NAME}_node PROPERTIES OUTPUT_NAME node PREFIX "")
+
+add_executable(test_move src/test_move.cc)
+add_dependencies(test_move ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(test_move conductrix ${catkin_LIBRARIES} ${LIBSERIAL_LIBRARIES})
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above

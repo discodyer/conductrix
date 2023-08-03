@@ -4,8 +4,10 @@
 #include "conductrix/ansi_color.h"
 #include <ros/console.h>
 
+LibSerial::SerialPort SerialBase::serial_port_;
+
 SerialBase::SerialBase(const std::string &port, int baud_rate)
-    : port_(port), baud_rate_(baud_rate), is_open_(false), serial_port_(port_)
+    : port_(port), baud_rate_(baud_rate), is_open_(false)
 {
 }
 
@@ -18,6 +20,7 @@ bool SerialBase::open()
 {
     try
     {
+        serial_port_.Open(port_);
         serial_port_.SetBaudRate(getBaudRate(baud_rate_));
         serial_port_.SetFlowControl(LibSerial::FlowControl::FLOW_CONTROL_NONE);
         serial_port_.SetCharacterSize(LibSerial::CharacterSize::CHAR_SIZE_8);

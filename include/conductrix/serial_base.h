@@ -22,7 +22,7 @@ public:
 private:
     std::string port_;
     int baud_rate_;
-    LibSerial::SerialPort serial_port_;
+    static LibSerial::SerialPort serial_port_;
     LibSerial::BaudRate getBaudRate(const int baud_rate) const;
     bool is_open_;
 };
