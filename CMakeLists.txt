@@ -8,7 +8,6 @@ add_compile_options(-std=c++11)
 add_compile_options(-fexec-charset=UTF-8)
 
 include_directories(include/rapidjson/include) ## add rapidjson
-include_directories(include/libserial/Serial) ## add libserial
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -23,8 +22,10 @@ find_package(catkin REQUIRED COMPONENTS
   tf2_geometry_msgs
   tf2_ros
   mavros_msgs
-  LIBSERIAL
 )
+
+find_package(PkgConfig)
+pkg_check_modules(LIBSERIAL libserial1)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
