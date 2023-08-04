@@ -22,7 +22,7 @@ public:
     bool setPosition(double distance, uint16_t velocity = 50, uint8_t acceleration = 64);
 
     bool setYawSpeed(double yaw_speed, uint8_t acceleration = 64);
-    bool setYawPosition(double yaw, uint16_t velocity = 50, uint8_t acceleration = 64);
+    bool setYawPosition(double yaw, uint16_t velocity = 20, uint8_t acceleration = 64);
 };
 
 #endif // CAR_H

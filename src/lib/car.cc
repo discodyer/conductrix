@@ -34,7 +34,7 @@ bool Car::stop()
 
 bool Car::setPosition(double distance, uint16_t velocity, uint8_t acceleration)
 {
-    uint32_t pulses = (uint32_t)(static_cast<uint16_t>(std::abs(distance)) * 15236);
+    uint32_t pulses = (uint32_t)(static_cast<uint16_t>(std::abs(distance * 15236)) );
     return (wheel_l_.setPosition(distance > 0 ? CCW : CW,
                                  velocity,
                                  acceleration,
@@ -56,7 +56,7 @@ bool Car::setYawSpeed(double yaw_speed, uint8_t acceleration)
 }
 bool Car::setYawPosition(double yaw, uint16_t velocity, uint8_t acceleration)
 {
-    uint32_t pulses = (uint32_t)(static_cast<uint16_t>(std::abs(yaw)) * 2583);
+    uint32_t pulses = (uint32_t)(static_cast<uint16_t>(std::abs(yaw * 2600 * 0.5)));
     return (wheel_l_.setPosition(yaw > 0 ? CW : CCW,
                                  velocity,
                                  acceleration,
