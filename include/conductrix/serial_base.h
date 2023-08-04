@@ -19,12 +19,14 @@ public:
     bool write(const std::vector<uint8_t>& raw_data);
     bool read(std::vector<uint8_t>& buffer, size_t buffer_size, size_t timeout_ms);
 
+protected:
+    static bool is_open_;
+
 private:
     std::string port_;
     int baud_rate_;
     static LibSerial::SerialPort serial_port_;
     LibSerial::BaudRate getBaudRate(const int baud_rate) const;
-    bool is_open_;
 };
 
 #endif // SERIAL_BASE_H

@@ -5,9 +5,10 @@
 #include <ros/console.h>
 
 LibSerial::SerialPort SerialBase::serial_port_;
+bool SerialBase::is_open_ = false;
 
 SerialBase::SerialBase(const std::string &port, int baud_rate)
-    : port_(port), baud_rate_(baud_rate), is_open_(false)
+    : port_(port), baud_rate_(baud_rate)
 {
 }
 
