@@ -26,7 +26,10 @@ int main(int argc, char** argv)
     // foc_control_l.setPosition(CCW, 50, 64, 12189);
     // foc_control_r.setPosition(CW, 50, 64, 12189);
 
-    car.setPosition(1.0);
+    // car.setPosition(-1.0);
+    // car.setVelocity(-1.0);
+    // car.setYawPosition(-1.0);
+    car.setYawSpeed(-1.0);
 
     // 10000 65.5cm
     // 10000 65.5cm
