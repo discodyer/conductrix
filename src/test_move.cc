@@ -1,5 +1,6 @@
 #include <ros/ros.h>
 #include "conductrix/foc_wheel.h"
+#include "conductrix/car.h"
 
 int main(int argc, char** argv)
 {
@@ -9,11 +10,9 @@ int main(int argc, char** argv)
     std::string serial_port_name = "/dev/ttyS3";
     int baud_rate = 115200;
 
-    // 创建FocControl对象并打开串口
-    FocControl foc_control_l(serial_port_name, baud_rate, 1, 200);
-    FocControl foc_control_r(serial_port_name, baud_rate, 2, 200);
+    Car car(serial_port_name, baud_rate, 1, 2, 200);
 
-    if (!foc_control_l.open())
+    if (!car.open())
     {
         ROS_ERROR("Failed to open serial port!");
         return 1;
@@ -24,8 +23,10 @@ int main(int argc, char** argv)
     // foc_control_l.setPosition(CW, 50, 64, 8115);
     // foc_control_r.setPosition(CW, 50, 64, 8115);
 
-    foc_control_l.setPosition(CCW, 50, 64, 12189);
-    foc_control_r.setPosition(CW, 50, 64, 12189);
+    // foc_control_l.setPosition(CCW, 50, 64, 12189);
+    // foc_control_r.setPosition(CW, 50, 64, 12189);
+
+    car.setPosition(1.0);
 
     // 10000 65.5cm
     // 10000 65.5cm
@@ -54,14 +55,10 @@ int main(int argc, char** argv)
 
 
     // 等待一段时间，让轮子转动一圈
-    ros::Duration(20.0).sleep();
+    ros::Duration(5.0).sleep();
 
     // 停止闭环电机旋转
-    foc_control_l.stop();
-    foc_control_r.stop();
-
-    // 关闭串口
-    foc_control_l.close();
+    car.stop();
 
     return 0;
 }
