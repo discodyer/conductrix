@@ -170,9 +170,9 @@ add_library(conductrix ${CONDUCTRIX_SOURCES})
 # add_dependencies(test_move ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 # target_link_libraries(test_move conductrix ${catkin_LIBRARIES} ${LIBSERIAL_LIBRARIES})
 
-add_executable(communication src/communication.cc)
-add_dependencies(communication ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(communication conductrix ${catkin_LIBRARIES} ${LIBSERIAL_LIBRARIES})
+add_executable(drone_to_car_com src/communication.cc)
+add_dependencies(drone_to_car_com ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(drone_to_car_com conductrix ${catkin_LIBRARIES} ${LIBSERIAL_LIBRARIES})
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above

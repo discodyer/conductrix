@@ -15,15 +15,20 @@
 #include <libserial/SerialStream.h>
 #include "conductrix/ansi_color.h"
 
-bool takeoff_flag = false;
+bool takeoff_common_flag = false;
+bool takeoff_harder_flag = false;
 
 void takeoffCallback(const std_msgs::String::ConstPtr &msg)
 {
-    ROS_INFO("takeoff !");
-    if (msg->data.c_str() == "takeoff")
+    if (msg->data == std::string("takeoff_common"))
     {
-        takeoff_flag = true;
-    }
+        takeoff_common_flag = true;
+        ROS_INFO("takeoff common !");
+    }else if (msg->data == std::string("takeoff_harder"))
+    {
+        takeoff_harder_flag = true;
+        ROS_INFO("takeoff harder !");
+    }   
 }
 
 int main(int argc, char **argv)
@@ -59,7 +64,7 @@ int main(int argc, char **argv)
     while (ros::ok())
     {
         const int BUFFER_SIZE = 128;
-        char input_buffer[BUFFER_SIZE];
+        char input_buffer[BUFFER_SIZE] = {};
         int input_len = 0;
         while (serial_stream_.IsDataAvailable())
         {
@@ -78,20 +83,21 @@ int main(int argc, char **argv)
             }
             break;
         case 0x02: // 点发布频道
-            if (input_buffer[8] == 0x6b)
+            if (input_buffer[11] == 0x6b)
             {
                 double pose_x = ((double)((input_buffer[3] << 8) | input_buffer[4]) / 1000) * (input_buffer[2] > 0 ? -1 : 1);
                 double pose_y = ((double)((input_buffer[6] << 8) | input_buffer[7]) / 1000) * (input_buffer[5] > 0 ? -1 : 1);
+                double pose_z = ((double)((input_buffer[9] << 8) | input_buffer[10]) / 1000) * (input_buffer[8] > 0 ? -1 : 1);
                 geometry_msgs::Point pose;
                 pose.x = pose_x;
                 pose.y = pose_y;
-                pose.z = 0.0;
+                pose.z = pose_z;
                 drone_pose_pub_.publish(pose);
-                ROS_INFO("Pose drone: x: %f, y: %f", pose_x, pose_y);
+                ROS_INFO("Pose drone: x: %f, y: %f, z: %f", pose_x, pose_y, pose_z);
             }
             break;
         case 0x03: // 火源发布频道
-            if (input_buffer[8] == 0x6b)
+            if (input_buffer[11] == 0x6b)
             {   
                 double fire_x = ((double)((input_buffer[3] << 8) | input_buffer[4]) / 1000) * (input_buffer[2] > 0 ? -1 : 1);
                 double fire_y = ((double)((input_buffer[6] << 8) | input_buffer[7]) / 1000) * (input_buffer[5] > 0 ? -1 : 1);
@@ -108,10 +114,24 @@ int main(int argc, char **argv)
             break;
         }
 
-        if(takeoff_flag)
+        if(takeoff_common_flag)
         {
-            serial_stream_ << 0xac << 0xab << 0x6b; // 起飞
-            takeoff_flag = false;
+            char output_buffer[3];
+            output_buffer[0] = 0xac;
+            output_buffer[1] = 0xaa;
+            output_buffer[2] = 0x6b;
+            serial_stream_.write(output_buffer, 3);
+            takeoff_common_flag = false;
+        }
+
+        if(takeoff_harder_flag)
+        {
+            char output_buffer[3];
+            output_buffer[0] = 0xac;
+            output_buffer[1] = 0xab;
+            output_buffer[2] = 0x6b;
+            serial_stream_.write(output_buffer, 3);
+            takeoff_harder_flag = false;
         }
 
         ros::spinOnce();
