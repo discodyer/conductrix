@@ -19,10 +19,10 @@ bool Car::open()
 
 bool Car::setVelocity(double velocity, uint8_t acceleration)
 {
-    return (wheel_l_.setSpeed(velocity > 0 ? CCW : CW,
+    return (wheel_l_.setSpeed(velocity < 0 ? CCW : CW,
                               (uint16_t) static_cast<uint16_t>(std::abs(velocity * 100)),
                               static_cast<uint8_t>(acceleration))) &&
-           (wheel_r_.setSpeed(velocity > 0 ? CW : CCW,
+           (wheel_r_.setSpeed(velocity < 0 ? CW : CCW,
                               (uint16_t) static_cast<uint16_t>(std::abs(velocity * 100)),
                               static_cast<uint8_t>(acceleration)));
 }
@@ -35,11 +35,11 @@ bool Car::stop()
 bool Car::setPosition(double distance, uint16_t velocity, uint8_t acceleration)
 {
     uint32_t pulses = (uint32_t)(static_cast<uint16_t>(std::abs(distance * 15236)) );
-    return (wheel_l_.setPosition(distance > 0 ? CCW : CW,
+    return (wheel_l_.setPosition(distance < 0 ? CCW : CW,
                                  velocity,
                                  acceleration,
                                  pulses)) &&
-           (wheel_r_.setPosition(distance > 0 ? CW : CCW,
+           (wheel_r_.setPosition(distance < 0 ? CW : CCW,
                                  velocity,
                                  acceleration,
                                  pulses));
