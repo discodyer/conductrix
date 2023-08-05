@@ -166,9 +166,13 @@ add_library(conductrix ${CONDUCTRIX_SOURCES})
 ## e.g. "rosrun someones_pkg node" instead of "rosrun someones_pkg someones_pkg_node"
 # set_target_properties(${PROJECT_NAME}_node PROPERTIES OUTPUT_NAME node PREFIX "")
 
-add_executable(test_move src/test_move.cc)
-add_dependencies(test_move ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(test_move conductrix ${catkin_LIBRARIES} ${LIBSERIAL_LIBRARIES})
+# add_executable(test_move src/test_move.cc)
+# add_dependencies(test_move ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# target_link_libraries(test_move conductrix ${catkin_LIBRARIES} ${LIBSERIAL_LIBRARIES})
+
+add_executable(communication src/communication.cc)
+add_dependencies(communication ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(communication conductrix ${catkin_LIBRARIES} ${LIBSERIAL_LIBRARIES})
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
